@@ -1,44 +1,30 @@
-function printStraightDown(row, column, matrix, chars) {
-    while (row < matrix.length && chars.length) {
-        matrix[row][column] = chars.splice(0, 1)[0];
-        row++;
-    }
-    row--; //last inc doesnt count;
-    return [row, column];
-}
-
-function printZiggingUp(row, column, matrix, chars) {
-    row = row - 1 < 0 ? 0 : row - 1;
-    column++;
-    while (row > 0 && column < matrix[0].length && chars.length) {
-        matrix[row][column] = chars.splice(0, 1)[0];
-        row--;
-        column++;
-    }
-    return [row, column];
-}
-
 /**
  * @param {string} s
  * @param {number} numRows
  * @return {string}
  */
 var convert = function (s, numRows) {
-    let chars = s.split('');
-    let matrix = new Array(numRows).fill().map(() => new Array(s.length).fill(''));
-
-    let row = 0;
-    let column = 0;
-
-    while (chars.length) {
-        ([row, column] = printStraightDown(row, column, matrix, chars));
-        ([row, column] = printZiggingUp(row, column, matrix, chars));
+    if (numRows === 1) {
+        return s;
     }
 
-    return matrix.map((row) => {
-        return row.filter((char) => {
-            return char !== '';
-        }).join('');
+    let chars = s.split('');
+    let resultRows = new Array(numRows).fill().map(() => {
+        return new Array();
+    });
+
+    let row = 0;
+    let direction = 1;
+    while (chars.length) {
+        resultRows[row].push(chars.splice(0, 1)[0]);
+        row = row + direction;
+        if (row === numRows || row === -1) {
+            direction *= -1;
+            row = row + 2 * direction;
+        }
+    }
+    return resultRows.map((row) => {
+        return row.join('');
     }).join('');
 };
 
