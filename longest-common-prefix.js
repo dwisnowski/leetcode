@@ -1,22 +1,15 @@
-/**
- * @param {string[]} strs
- * @return {string}
- */
-function getLongestPrefix(word1, word2){
-    let pointer = 0;
-    let prefix = '';
-    while (word1.charAt(pointer) && word2.charAt(pointer) && word1.charAt(pointer) === word2.charAt(pointer)){
-        prefix += word1.charAt(pointer);
-        pointer++;
+function longestCommonPrefix(strs) {
+    if (strs == null || strs.length == 0) return "";
+    for (let i = 0; i < strs[0].length ; i++){
+        let c = strs[0].charAt(i);
+        for (let j = 1; j < strs.length; j ++) {
+            if (i == strs[j].length || strs[j].charAt(i) != c)
+                return strs[0].slice(0, i);             
+        }
     }
-    return prefix;
+    return strs[0];
 }
 
-var longestCommonPrefix = function (strs) {
-    return strs.reduce((accum, str, index)=> {
-        return getLongestPrefix(str, accum);
-    }, strs[0]);
-};
 
 let expected, actual, strs;
 
